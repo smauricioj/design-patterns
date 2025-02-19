@@ -9,35 +9,41 @@ from abc import ABC, abstractmethod
 
 
 class AbstractProductA(ABC):
-    pass
+    
+    @abstractmethod
+    def use_a(self) -> None:
+        pass
+
+
+class AbstractProductB(ABC):
+    
+    @abstractmethod
+    def use_b(self) -> None:
+        pass
 
 
 class ProductA1(AbstractProductA):
     
-    def __repr__(self):
-        return 'Product of type A, family 1'
+    def use_a(self) -> None:
+        print("Realiza tarefa 'a', mas com características da família 1")
 
 
 class ProductA2(AbstractProductA):
     
-    def __repr__(self):
-        return 'Product of type A, family 2'
-
-
-class AbstractProductB(ABC):
-    pass
+    def use_a(self) -> None:
+        print("Realiza tarefa 'a', mas com características da família 2")
 
 
 class ProductB1(AbstractProductB):
     
-    def __repr__(self):
-        return 'Product of type B, family 1'
+    def use_b(self) -> None:
+        print("Realiza tarefa 'b', mas com características da família 1")
 
 
 class ProductB2(AbstractProductB):
     
-    def __repr__(self):
-        return 'Product of type B, family 2'
+    def use_b(self) -> None:
+        print("Realiza tarefa 'b', mas com características da família 2")
     
 
 class AbstractFactory(ABC):
@@ -68,19 +74,19 @@ class Factory2(AbstractFactory):
     def createProductB(self):
         return ProductB2()
     
-# Testes Abstract Factory
+# Teste
 def abstract_factory_tests() -> bool:
-    print("Testes Abstract Factory -------------------------")
     f1 = Factory1()    
     pa1 = f1.createProductA()
     f2 = Factory2()
     pa2 = f2.createProductA()
     assert(issubclass(type(pa1), AbstractProductA))
     assert(issubclass(type(pa2), AbstractProductA))
+    pb = f1.createProductB()
+    assert(issubclass(type(pb), AbstractProductB))
     return True
 
-# Main #################################################
-
+# Main
 def main() -> None:
     assert(abstract_factory_tests()) 
     

@@ -6,25 +6,33 @@ Data: 18/11/2024
 """
 
 from abc import ABCMeta, abstractmethod
+from typing import Dict
+from typing_extensions import Self
 
 # Factory Method #########################################
 
 class AbstractProduct(metaclass=ABCMeta):
+    
+    def __init__(self) -> None:
+        pass
     
     @property
     @abstractmethod
     def foo(self):
         pass
     
-    def copy(self):
-        ''' Projeto padrão Prototype'''
+    def copy(self) -> Self:
+        ''' Método do Projeto Padrão Prototype'''
         object = eval(type(self).__name__)
-        copy = object.__new__(object)
-        copy.__dict__ = self.__dict__
-        return copy
+        newInstance = object.__new__(object)
+        newInstance.__dict__ = self.__dict__.copy()
+        return newInstance
 
 
 class ProductA(AbstractProduct):
+    
+    def __init__(self):
+        super().__init__()
         
     @property
     def foo(self):
@@ -32,6 +40,9 @@ class ProductA(AbstractProduct):
 
   
 class ProductB(AbstractProduct):
+    
+    def __init__(self):
+        super().__init__()
         
     @property
     def foo(self):
@@ -47,9 +58,9 @@ class AbstractCreator(metaclass=ABCMeta):
 
 class Creator(AbstractCreator):
     
-    __prototypes : dict = {}
+    __prototypes : Dict[str, AbstractProduct] = {}
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.__prototypes['ProductA'] = ProductA()
         self.__prototypes['ProductB'] = ProductB()
 
@@ -59,7 +70,7 @@ class Creator(AbstractCreator):
     
 # Testes de Factory Method
 
-if __name__ == '__main__':
+def factory_method_tests() -> bool:
     print('Testes Factory Method --------------------------')
     c = Creator()
     pa1 = c.factoryMethod(product='ProductA')
@@ -67,6 +78,7 @@ if __name__ == '__main__':
     pb = c.factoryMethod(product='ProductB')
     assert id(pa1) != id(pa2)
     assert type(pa1) != type(pb)
+    return True
 
 # Abstract Factory #########################################
 
@@ -131,11 +143,21 @@ class Factory2(AbstractFactory):
         return ProductB2()
     
 # Testes Abstract Factory
-if __name__ == '__main__':
+def abstract_factory_tests() -> bool:
     print("Testes Abstract Factory -------------------------")
     f1 = Factory1()    
     pa1 = f1.createProductA()
     f2 = Factory2()
-    pa2 = f2.createProductA()    
-    print(pa1)
-    print(pa2)
+    pa2 = f2.createProductA()
+    assert(issubclass(type(pa1), AbstractProductA))
+    assert(issubclass(type(pa2), AbstractProductA))
+    return True
+    
+# Main #################################################
+
+def main() -> None:
+    assert(factory_method_tests())
+    assert(abstract_factory_tests()) 
+    
+if __name__ == "__main__":
+    main()

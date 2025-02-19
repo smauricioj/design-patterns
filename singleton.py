@@ -19,16 +19,15 @@ class SingletonLazy:
             cls.__instance = SingletonLazy()
         return cls.__instance
     
-# Testes SingletonLazy
-
-if __name__ == "__main__":    
+# Teste SingletonLazy
+def singleton_lazy_tests() -> bool:   
     print('SingletonLazy tests: --------------------------------------------------') 
-    s1 = SingletonLazy()
-    print('Objeto não instanciado')
-    ins = SingletonLazy.get_instance()
-    print('Objeto criado agora!')
-    print(id(s1))
-    print(id(ins))
+    s = SingletonLazy()
+    ins1 = SingletonLazy.get_instance()
+    ins2 = SingletonLazy.get_instance()
+    assert(id(s) != id(ins1))
+    assert(id(ins1) == id(ins2))
+    return True
 
 
 class SingletonMonostate:
@@ -37,7 +36,7 @@ class SingletonMonostate:
     mas elas compartilham o mesmo estado dos atributos
     '''
     
-    __estado = {}
+    __estado : dict = {}
     
     def __new__(cls, *args, **kwargs):
         obj = super(SingletonMonostate, cls).__new__(cls, *args, **kwargs)
@@ -46,17 +45,14 @@ class SingletonMonostate:
     
 # Testes SingletonMonostate
 
-if __name__ == "__main__":
+def singleton_monostate_tests() -> bool:
     print('SingletonMonostate tests: --------------------------------------------------')
     m1 = SingletonMonostate()
-    print(f'M1 ID: {id(m1)}')
-    print(m1.__dict__)
     m2 = SingletonMonostate()
-    print(f'M2 ID: {id(m2)}')
-    print(m2.__dict__)
-    m1.nome = 'Felicity'
-    print(m1.__dict__)
-    print(m2.__dict__)
+    m1.foo = 'bar'
+    assert(id(m1) != id(m2))
+    assert(m2.foo == 'bar')
+    return True
 
 
 class SingletonMetaclass(type):
@@ -70,27 +66,23 @@ class SingletonMetaclass(type):
         if cls not in cls.__instances:
             cls.__instances[cls] = super(SingletonMetaclass, cls).__call__(*args, **kwds)
         return cls.__instances[cls]
-
+    
+    
+class Logger(metaclass=SingletonMetaclass):
+    pass
 
 # Testes SingletonMetaclass
-if __name__ == "__main__":
+def singleton_metaclass_tests() -> bool:
     print('SingletonMetaclass tests: --------------------------------------------------')
+    l1, l2 = Logger(), Logger()
+    assert(id(l1) == id(l2))
+    return True
     
+# Main
+def main() -> None:
+    assert(singleton_lazy_tests())
+    assert(singleton_monostate_tests())
+    assert(singleton_metaclass_tests())
     
-    class Logger(metaclass=SingletonMetaclass):
-        pass
-
-    l1 = Logger()
-    l2 = Logger()
-    print(f'l1: {id(l1)}')
-    print(f'l2: {id(l2)}')
-    
-    
-    class ConfigData(metaclass=SingletonMetaclass):
-        pass
-    
-    c1 = ConfigData()
-    c2 = ConfigData()
-    print(f'c1: {id(c1)}')
-    print(f'c2: {id(c2)}')
-    
+if __name__ == "__main__":
+    main()

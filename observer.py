@@ -1,5 +1,5 @@
 """
-Módulo com uma implementação do projeto padrão Observer
+Módulo com exemplo de implementação do projeto padrão Observer
 
 Autor: Sergio P.
 Data: 18/11/2024
@@ -12,7 +12,7 @@ class AbstractObject(metaclass=ABCMeta):
     
     __observers : list
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.__observers = []
     
     @property
@@ -48,9 +48,9 @@ class Object(AbstractObject):
         return None
  
 
-class Observer(metaclass=ABCMeta):
+class AbstractObserver(metaclass=ABCMeta):
     
-    def __init__(self, object : Object):
+    def __init__(self, object : Object) -> None:
         self.object = object
         self.object.register(self)
         
@@ -59,23 +59,38 @@ class Observer(metaclass=ABCMeta):
         pass
 
 
-class ObserverA(Observer):
+class ObserverA(AbstractObserver):
+    
+    def __init__(self, object) -> None:
+        super().__init__(object)
         
-    def notify(self):
+    def notify(self) -> bool:
         print(f'Reação (tipo A) à notificação que o estado atual é: {self.object.state}')
         return True
 
 
-class ObserverB(Observer):
+class ObserverB(AbstractObserver):
+    
+    def __init__(self, object) -> None:
+        super().__init__(object)
         
-    def notify(self):
+    def notify(self) -> bool:
         print(f'Reação (tipo B) à notificação que o estado atual é: {self.object.state}')
         return True
         
+        
 # Testes
-if __name__ == '__main__':
+def observer_tests() -> bool:
     obj = Object()    
     ObserverA(obj)
     ObserverB(obj)
     obj.state = 3
     obj.notify()
+    return True
+    
+# Main
+def main() -> None:
+    assert(observer_tests())
+    
+if __name__ == "__main__":
+    main()

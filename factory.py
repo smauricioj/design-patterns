@@ -5,13 +5,13 @@ Autor: Sergio P.
 Data: 18/11/2024
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from typing import Dict
 from typing_extensions import Self
 
 # Factory Method #########################################
 
-class AbstractProduct(metaclass=ABCMeta):
+class AbstractProduct(ABC):
     
     def __init__(self) -> None:
         pass
@@ -49,7 +49,7 @@ class ProductB(AbstractProduct):
         return 'bar'
 
 
-class AbstractCreator(metaclass=ABCMeta):
+class AbstractCreator(ABC):
     
     @abstractmethod
     def factoryMethod(self) -> AbstractProduct:
@@ -82,7 +82,7 @@ def factory_method_tests() -> bool:
 
 # Abstract Factory #########################################
 
-class AbstractProductA(metaclass=ABCMeta):
+class AbstractProductA(ABC):
     pass
 
 
@@ -98,7 +98,7 @@ class ProductA2(AbstractProductA):
         return 'Product of type A, family 2'
 
 
-class AbstractProductB(metaclass=ABCMeta):
+class AbstractProductB(ABC):
     pass
 
 
@@ -114,7 +114,7 @@ class ProductB2(AbstractProductB):
         return 'Product of type B, family 2'
     
 
-class AbstractFactory(metaclass=ABCMeta):
+class AbstractFactory(ABC):
     
     @abstractmethod
     def createProductA(self) -> AbstractProductA:

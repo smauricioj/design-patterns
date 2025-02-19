@@ -5,10 +5,10 @@ Autor: Sergio P.
 Data: 18/11/2024
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 
-class AbstractObject(metaclass=ABCMeta):
+class AbstractObject(ABC):
     
     __observers : list
     
@@ -48,7 +48,7 @@ class Object(AbstractObject):
         return None
  
 
-class AbstractObserver(metaclass=ABCMeta):
+class AbstractObserver(ABC):
     
     def __init__(self, object : Object) -> None:
         self.object = object

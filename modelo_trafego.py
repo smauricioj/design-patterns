@@ -5,13 +5,13 @@ Autor: Sergio P.
 Data: 10/11/2024
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from datetime import datetime
 from singleton import SingletonMetaclass
 
 
 # Sensor Abstrato
-class TrafficSensor(metaclass=ABCMeta):
+class TrafficSensor(ABC):
     
     __kind = None
     
@@ -46,7 +46,7 @@ class HighwayTrafficSensor(TrafficSensor):
         
 
 # Atuador abstrato
-class TrafficActuator(metaclass=ABCMeta):
+class TrafficActuator(ABC):
     
     __kind : str = None
     
@@ -81,7 +81,7 @@ class HighwayTrafficActuator(TrafficActuator):
 
     
 # Fábrica abstrata
-class DeviceFactory(metaclass=ABCMeta):
+class DeviceFactory(ABC):
     
     @abstractmethod
     def createSensor(self) -> TrafficSensor:
@@ -171,7 +171,7 @@ class TrafficControlManager(metaclass=SingletonMetaclass):
             
 
 # Observador Abstrato
-class TrafficObserver(metaclass=ABCMeta):
+class TrafficObserver(ABC):
     
     def __init__(self, stat : TrafficStatus):
         self.stat = stat

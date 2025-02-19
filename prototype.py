@@ -5,10 +5,10 @@ Autor: Sergio P.
 Data: 20/11/2024
 """
 
-from abc import ABCMeta
+from abc import ABC
 from typing_extensions import Self
 
-class Prototype(metaclass=ABCMeta):
+class Prototype(ABC):
     
     def __init__(self) -> None:
         pass

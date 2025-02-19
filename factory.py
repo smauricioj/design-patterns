@@ -9,12 +9,7 @@ from abc import ABC, abstractmethod
 from typing import Dict
 from typing_extensions import Self
 
-# Factory Method #########################################
-
 class AbstractProduct(ABC):
-    
-    def __init__(self) -> None:
-        pass
     
     @property
     @abstractmethod
@@ -22,7 +17,9 @@ class AbstractProduct(ABC):
         pass
     
     def copy(self) -> Self:
-        ''' Método do Projeto Padrão Prototype'''
+        '''
+        Método do Projeto Padrão Prototype
+        '''
         object = eval(type(self).__name__)
         newInstance = object.__new__(object)
         newInstance.__dict__ = self.__dict__.copy()
@@ -31,21 +28,21 @@ class AbstractProduct(ABC):
 
 class ProductA(AbstractProduct):
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self) -> None:
+        pass
         
     @property
-    def foo(self):
+    def foo(self) -> str:
         return 'foo'
 
   
 class ProductB(AbstractProduct):
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self) -> None:
+        pass
         
     @property
-    def foo(self):
+    def foo(self) -> str:
         return 'bar'
 
 
@@ -53,7 +50,7 @@ class AbstractCreator(ABC):
     
     @abstractmethod
     def factoryMethod(self) -> AbstractProduct:
-        raise NotImplementedError()
+        pass
      
 
 class Creator(AbstractCreator):
@@ -68,96 +65,19 @@ class Creator(AbstractCreator):
         return self.__prototypes[product].copy()
 
     
-# Testes de Factory Method
-
+# Teste
 def factory_method_tests() -> bool:
-    print('Testes Factory Method --------------------------')
     c = Creator()
     pa1 = c.factoryMethod(product='ProductA')
     pa2 = c.factoryMethod(product='ProductA')
-    pb = c.factoryMethod(product='ProductB')
+    pb1 = c.factoryMethod(product='ProductB')
     assert id(pa1) != id(pa2)
-    assert type(pa1) != type(pb)
-    return True
-
-# Abstract Factory #########################################
-
-class AbstractProductA(ABC):
-    pass
-
-
-class ProductA1(AbstractProductA):
-    
-    def __repr__(self):
-        return 'Product of type A, family 1'
-
-
-class ProductA2(AbstractProductA):
-    
-    def __repr__(self):
-        return 'Product of type A, family 2'
-
-
-class AbstractProductB(ABC):
-    pass
-
-
-class ProductB1(AbstractProductB):
-    
-    def __repr__(self):
-        return 'Product of type B, family 1'
-
-
-class ProductB2(AbstractProductB):
-    
-    def __repr__(self):
-        return 'Product of type B, family 2'
-    
-
-class AbstractFactory(ABC):
-    
-    @abstractmethod
-    def createProductA(self) -> AbstractProductA:
-        pass
-    
-    @abstractmethod
-    def createProductB(self) -> AbstractProductB:
-        pass
-    
-    
-class Factory1(AbstractFactory):
-    
-    def createProductA(self):
-        return ProductA1()
-    
-    def createProductB(self):
-        return ProductB1()
-    
-    
-class Factory2(AbstractFactory):
-    
-    def createProductA(self):
-        return ProductA2()
-    
-    def createProductB(self):
-        return ProductB2()
-    
-# Testes Abstract Factory
-def abstract_factory_tests() -> bool:
-    print("Testes Abstract Factory -------------------------")
-    f1 = Factory1()    
-    pa1 = f1.createProductA()
-    f2 = Factory2()
-    pa2 = f2.createProductA()
-    assert(issubclass(type(pa1), AbstractProductA))
-    assert(issubclass(type(pa2), AbstractProductA))
+    assert type(pa1) != type(pb1)
     return True
     
-# Main #################################################
-
+# Main
 def main() -> None:
     assert(factory_method_tests())
-    assert(abstract_factory_tests()) 
     
 if __name__ == "__main__":
     main()

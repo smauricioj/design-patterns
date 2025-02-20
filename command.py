@@ -7,6 +7,7 @@ Data: 19/02/2025
 
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from typing import List
 
 
 class Command(ABC):
@@ -71,8 +72,8 @@ class Invoker:
     '''
     
     def __init__(self) -> None:
-        self._before: list[Command] = []
-        self._after: list[Command] = []
+        self._before: List[Command] = []
+        self._after: List[Command] = []
         
     def append_command_before(self, cmd: Command) -> None:
         self._before.append(cmd)
@@ -80,7 +81,7 @@ class Invoker:
     def append_command_after(self, cmd: Command) -> None:
         self._after.append(cmd)
         
-    def do_something_important(self) -> None:
+    def do_something_important(self) -> bool:
         if self._before:
             for cmd in self._before:
                 cmd.execute()
@@ -90,16 +91,14 @@ class Invoker:
             for cmd in self._after:
                 cmd.execute()
             self._after.clear()
+        return True
 
 # Testes
-def command_tests() -> bool:
-    
-    ivk = Invoker()
+def command_tests() -> bool:    
+    ivk, rcv = Invoker(), Receiver()
     ivk.append_command_before(SimpleCommand(foo='abc'))
-    rcv = Receiver()
     ivk.append_command_after(ComplexCommand(receiver=rcv, foo='abc', bar='123'))
-    ivk.do_something_important()
-    return True
+    return ivk.do_something_important()
     
 # Main
 def main() -> None:

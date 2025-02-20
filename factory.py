@@ -1,5 +1,5 @@
 """
-Módulo com diversas implementações do projeto padrão do tipo Factory
+Módulo com exemplo do projeto padrão tipo Factory Method
 
 Autor: Sergio P.
 Data: 18/11/2024
@@ -10,7 +10,13 @@ from typing import Dict
 from typing_extensions import Self
 
 class AbstractProduct(ABC):
+    '''
+    Uma interface comum para diferentes tipos de produtos
+    define uma propriedade abstrata 'foo'
     
+    Por minha sanidade, eu usei prototype para geração
+    dos múltiplos produtos... mas não é necessário.
+    '''
     @property
     @abstractmethod
     def foo(self):
@@ -27,9 +33,9 @@ class AbstractProduct(ABC):
 
 
 class ProductA(AbstractProduct):
-    
-    def __init__(self) -> None:
-        pass
+    '''
+    Um tipo A de produto concreto a ser produzido na fábrica
+    '''
         
     @property
     def foo(self) -> str:
@@ -37,9 +43,9 @@ class ProductA(AbstractProduct):
 
   
 class ProductB(AbstractProduct):
-    
-    def __init__(self) -> None:
-        pass
+    '''
+    Outro tipo B de produto concreto a ser produzido na fábrica
+    '''
         
     @property
     def foo(self) -> str:
@@ -47,6 +53,11 @@ class ProductB(AbstractProduct):
 
 
 class AbstractCreator(ABC):
+    '''
+    A entidade criadora de produtos define uma interface
+    com um método abstrado de criação. Veja que é apenas
+    definido um retorno do método: um produto.
+    '''
     
     @abstractmethod
     def factoryMethod(self) -> AbstractProduct:
@@ -54,6 +65,11 @@ class AbstractCreator(ABC):
      
 
 class Creator(AbstractCreator):
+    '''
+    O criador concreto define como o método de fabricação
+    é responsável por instanciar os produtos corretos.
+    Aqui, eu usei o padrão protótipo a partir de uma tabela hash
+    '''
     
     __prototypes : Dict[str, AbstractProduct] = {}
     

@@ -5,87 +5,113 @@ Autor: Sergio P.
 Data: 18/11/2024
 """
 
+from __future__ import annotations
 from abc import ABC, abstractmethod
+from random import randrange
+from typing import List
 
 
-class AbstractObject(ABC):
+class AbstractSubject(ABC):
+    '''
+    A interface de sujeito define os três métodos do padrão.
+    Os observadores podem observar um sujeito (attach) e 
+    deixar de observar (dettach). Além disso, é necessário
+    um método para notificar (notify) todos os observadores
+    quando há mudança no estado do sujeito.
+    '''
     
-    __observers : list
+    @abstractmethod
+    def attach(self, obs: AbstractObserver) -> None:
+        pass
+    
+    @abstractmethod
+    def dettach(self, obs: AbstractObserver) -> None:
+        pass
+    
+    @abstractmethod
+    def notify(self) -> None:
+        pass    
+
+
+class Subject(AbstractSubject):
+    '''
+    A versão concreta de um sujeito deve definir como os
+    métodos funcionam. Aqui, os observadores são armazenados
+    em uma lista, e o estado do sujeito é apenas um número.
+    '''
+    
+    __observers : List[AbstractObserver]
+    __state : int
     
     def __init__(self) -> None:
         self.__observers = []
-    
-    @property
-    def observers(self):
-        return [type(valor).__name__ for valor in self.__observers]
-    
-    def register(self, observer) -> None:
-        self.__observers.append(observer)
-        return None
-        
-    def unregister(self, observer) -> None:
-        return self.__observers.remove(observer)
-        
-    def notify(self) -> None:
-        assert [o.notify() for o in self.__observers]
-        return None
-
-class Object(AbstractObject):
-    
-    __state : int
-    
-    def __init__(self):
-        super().__init__()
         self.__state = 0
-
+        
+    def attach(self, obs: AbstractObserver) -> None:
+        self.__observers.append(obs)
+        
+    def dettach(self, obs):
+        return self.__observers.remove(obs)
+    
+    def notify(self) -> None:
+        for obs in self.__observers:
+            obs.update(self)
+            
+    def task(self) -> None:
+        '''
+        Dificilmente o padrão Observer é a totalidade da classe
+        sujeito. Na prática, ela também realiza tarefas, integrada
+        ao software completo, e quando seu estado é modificado ela
+        notifica os observadores (sistema push)
+        '''
+        self.__state = randrange(0, 10)
+        self.notify()
+        
     @property
     def state(self) -> int:
-        return int(self.__state)
-    
-    @state.setter
-    def state(self, value : int) -> None:
-        self.__state = int(value)
-        return None
+        return self.__state
  
 
 class AbstractObserver(ABC):
-    
-    def __init__(self, object : Object) -> None:
-        self.object = object
-        self.object.register(self)
+    '''
+    A interface de observadores requer apenas a declaração
+    de uma reação à atualização do sujeito observado
+    '''
         
     @abstractmethod
-    def notify(self):
+    def update(self, sbj: AbstractSubject):
         pass
 
 
 class ObserverA(AbstractObserver):
-    
-    def __init__(self, object) -> None:
-        super().__init__(object)
+    '''
+    Diferentes observadores concretos, por sua vez, realizam
+    reações diferentes ao estado atual do sujeito observado.
+    '''
         
-    def notify(self) -> bool:
-        print(f'Reação (tipo A) à notificação que o estado atual é: {self.object.state}')
-        return True
+    def update(self, sbj: AbstractSubject) -> None:
+        print(f'Reação do observador A ao estado atual: {sbj.state}')
 
 
 class ObserverB(AbstractObserver):
-    
-    def __init__(self, object) -> None:
-        super().__init__(object)
+    '''
+    Esse é outro observador
+    '''
         
-    def notify(self) -> bool:
-        print(f'Reação (tipo B) à notificação que o estado atual é: {self.object.state}')
-        return True
+    def update(self, sbj: AbstractSubject) -> None:
+        print(f'Reação do observador B ao estado atual: {sbj.state}')
         
         
 # Testes
 def observer_tests() -> bool:
-    obj = Object()    
-    ObserverA(obj)
-    ObserverB(obj)
-    obj.state = 3
-    obj.notify()
+    sbj = Subject()    
+    obs_a = ObserverA()
+    sbj.attach(obs_a)
+    obs_b = ObserverB()
+    sbj.attach(obs_b)
+    sbj.task()
+    sbj.dettach(obs_b)
+    sbj.task()
     return True
     
 # Main

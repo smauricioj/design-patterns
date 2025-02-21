@@ -3,24 +3,23 @@ from __future__ import annotations
 
 class Facade:
     '''
-    A Facade forcene uma interface simplificada para um
-    conjunto completo de subsistemas. Isso barra o acesso
-    do cliente aos subsistemas e simplifica o seu entendimento
+    A Facade forcene uma interface simplificada para um conjunto comple-
+    to de subsistemas. Isso barra o acesso do cliente aos subsistemas e
+    simplifica o seu entendimento
     '''
     
     def __init__(self) -> None:
         '''
-        Os subsistemas estão aqui instanciados na
-        inicialização, mas também podem ser passados como
-        argumentos se necessário
+        Os subsistemas estão aqui instanciados na inicialização, mas
+        também podem ser passados como argumentos na construção se ne-
+        cessário
         '''
         self._subsystemA: SubsystemA = SubsystemA()
         self._subsystemB: SubsystemB = SubsystemB()
         
     def operation(self) -> bool:
         '''
-        Uma operação complexa que o cliente fica
-        abstraído e separado
+        Uma operação complexa que o cliente fica abstraído e separado
         '''
         results: list = []
         results.append(self._subsystemA.operation1())

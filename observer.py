@@ -13,11 +13,10 @@ from typing import List
 
 class AbstractSubject(ABC):
     '''
-    A interface de sujeito define os três métodos do padrão.
-    Os observadores podem observar um sujeito (attach) e 
-    deixar de observar (dettach). Além disso, é necessário
-    um método para notificar (notify) todos os observadores
-    quando há mudança no estado do sujeito.
+    A interface de sujeito define os três métodos do padrão. Os observa-
+    dores podem observar um sujeito (attach) e deixar de observar (det-
+    tach). Além disso, é necessário um método para notificar (notify)
+    todos os observadores quando há mudança no estado do sujeito.
     '''
     
     @abstractmethod
@@ -35,9 +34,9 @@ class AbstractSubject(ABC):
 
 class Subject(AbstractSubject):
     '''
-    A versão concreta de um sujeito deve definir como os
-    métodos funcionam. Aqui, os observadores são armazenados
-    em uma lista, e o estado do sujeito é apenas um número.
+    A versão concreta de um sujeito deve definir como os métodos funcio-
+    nam. Aqui, os observadores são armazenados em uma lista, e o estado
+    do sujeito é apenas um número.
     '''
     
     __observers : List[AbstractObserver]
@@ -59,10 +58,10 @@ class Subject(AbstractSubject):
             
     def task(self) -> None:
         '''
-        Dificilmente o padrão Observer é a totalidade da classe
-        sujeito. Na prática, ela também realiza tarefas, integrada
-        ao software completo, e quando seu estado é modificado ela
-        notifica os observadores (sistema push)
+        Dificilmente o padrão Observer é a totalidade da classe sujeito.
+        Na prática, ela também realiza tarefas, integrada ao software
+        completo, e quando seu estado é modificado ela notifica os ob-
+        servadores (sistema push)
         '''
         self.__state = randrange(0, 10)
         self.notify()
@@ -74,8 +73,8 @@ class Subject(AbstractSubject):
 
 class AbstractObserver(ABC):
     '''
-    A interface de observadores requer apenas a declaração
-    de uma reação à atualização do sujeito observado
+    A interface de observadores requer apenas a declaração de uma reação
+    à atualização do sujeito observado
     '''
         
     @abstractmethod
@@ -85,8 +84,8 @@ class AbstractObserver(ABC):
 
 class ObserverA(AbstractObserver):
     '''
-    Diferentes observadores concretos, por sua vez, realizam
-    reações diferentes ao estado atual do sujeito observado.
+    Diferentes observadores concretos, por sua vez, realizam reações di-
+    ferentes ao estado atual do sujeito observado.
     '''
         
     def update(self, sbj: AbstractSubject) -> None:

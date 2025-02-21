@@ -11,11 +11,11 @@ from typing_extensions import Self
 
 class AbstractProduct(ABC):
     '''
-    Uma interface comum para diferentes tipos de produtos
-    define uma propriedade abstrata 'foo'
+    Uma interface comum para diferentes tipos de produtos define uma
+    propriedade abstrata 'foo'
     
-    Por minha sanidade, eu usei prototype para geração
-    dos múltiplos produtos... mas não é necessário.
+    Por minha sanidade, eu usei prototype para geração dos múltiplos
+    produtos... mas não é necessário.
     '''
     @property
     @abstractmethod
@@ -54,9 +54,9 @@ class ProductB(AbstractProduct):
 
 class AbstractCreator(ABC):
     '''
-    A entidade criadora de produtos define uma interface
-    com um método abstrado de criação. Veja que é apenas
-    definido um retorno do método: um produto.
+    A entidade criadora de produtos define uma interface com um método
+    abstrado de criação. Importante que o retorno do método é definido
+    como um produto abstrato também.
     '''
     
     @abstractmethod
@@ -66,10 +66,10 @@ class AbstractCreator(ABC):
 
 class Creator(AbstractCreator):
     '''
-    O criador concreto define como o método de fabricação
-    é responsável por instanciar os produtos corretos.
-    Aqui, eu usei o padrão protótipo para instanciar os
-    produtos partir de uma tabela hash... mas não é necessário
+    O criador concreto define como o método de fabricação é responsável
+    por instanciar os produtos corretos. Aqui, eu usei o padrão protóti-
+    po para instanciar os produtos partir de uma tabela hash... mas não
+    é necessário
     '''
     
     __prototypes : Dict[str, AbstractProduct] = {}

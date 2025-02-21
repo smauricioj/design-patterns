@@ -241,13 +241,20 @@ if __name__ == '__main__':
     # Sensores podem atualizar o estado de tráfego através de seus dados
     sensorData = sensores[0].collectData()
     sensorData['congestionLevel'] = 9
-    sensorData['incident'] = 'Colisão entre veículos na esquina da rua foo com avenida bar'
+    sensorData['incident'] = 'Colisão entre veículos'
     status.updateStatus(sensorData)
     
-    # Após todas as atualizações dos sensores, informa as mudanças aos notificadores
+    # Após todas as atualizações dos sensores,
+    # informa as mudanças aos notificadores
     status.notifyObservers()
-    print(f'Motorista informado sobre o atual congestionamento de nível: {driver.currentCL}')
-    print(f'Autoridade informada sobre o último acidente: "{authority.lastIncident}"')
+    print(
+        f'Motorista informado sobre '+
+        f'o atual congestionamento de nível: {driver.currentCL}'
+    )
+    print(
+        f'Autoridade informada sobre '+
+        f'o último acidente: "{authority.lastIncident}"'
+    )
     
     # Como fazer a relação entre estado e atuadores? Controle?
     if status.congestionLevel > manager.metrics['maxCongestionLevel']:

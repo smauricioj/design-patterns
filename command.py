@@ -22,8 +22,8 @@ class Command(ABC):
 
 class SimpleCommand(Command):
     '''
-    Comandos simples podem implementar o código associado 
-    à uma tarefa sozinhos
+    Comandos simples podem implementar o código associado à uma tarefa
+    sozinhos
     '''
     
     def __init__(self, foo: str) -> None:
@@ -34,8 +34,8 @@ class SimpleCommand(Command):
         
 class ComplexCommand(Command):
     '''
-    Tarefas mais complexas são delegadas para outras classes,
-    chamadas receivers, onde a operação lógica fica implementada
+    Tarefas mais complexas são delegadas para outras classes, chamadas
+    receivers, onde a operação lógica fica implementada
     '''
     
     def __init__(self, receiver: Receiver, foo: str, bar: str) -> None:
@@ -63,12 +63,12 @@ class Receiver:
 
 class Invoker:
     '''
-    Invokers agem como um intermédio entre comandos e receivers, sem
-    depender diretamente das suas versões concretas. Eles repassa um
-    comando ao receiver de forma indireta, através da execução!
+    Invokers agem como um intermédio entre comandos e receivers, sem de-
+    pender diretamente das suas versões concretas. Eles repassa um coma-
+    ndo ao receiver de forma indireta, através da execução!
     
-    Aqui, esse é um exemplo de invoker que "protege" uma tarefa de
-    outras, que devem vir antes e depois.
+    Aqui, esse é um exemplo de invoker que "protege" uma tarefa de outr-
+    as, que devem vir antes e depois.
     '''
     
     def __init__(self) -> None:
@@ -97,7 +97,9 @@ class Invoker:
 def command_tests() -> bool:    
     ivk, rcv = Invoker(), Receiver()
     ivk.append_command_before(SimpleCommand(foo='abc'))
-    ivk.append_command_after(ComplexCommand(receiver=rcv, foo='abc', bar='123'))
+    ivk.append_command_after(
+        ComplexCommand(receiver=rcv, foo='abc', bar='123')
+    )
     return ivk.do_something_important()
     
 # Main

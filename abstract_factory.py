@@ -11,10 +11,9 @@ from abc import ABC, abstractmethod
 
 class AbstractFactory(ABC):
     '''
-    A interface de fábrica abstrata declara um conjunto de métodos
-    que retornam diferentes produtos. Esse conjunto de produtos é
-    chamado de família e estão relacionados por algum conceito de
-    alto nível.
+    A interface de fábrica abstrata declara um conjunto de métodos que
+    retornam diferentes produtos. Esse conjunto de produtos é chamado de
+    família e estão relacionados por algum conceito de alto nível.
     '''
     
     @abstractmethod
@@ -28,8 +27,8 @@ class AbstractFactory(ABC):
     
 class Factory1(AbstractFactory):
     '''
-    A fábrica concreta produz uma família específica de produtos,
-    garantindo consistência e compatibilidade entre produtos.
+    A fábrica concreta produz uma família específica de produtos, garan-
+    tindo consistência e compatibilidade entre produtos.
     '''
     
     def createProductA(self) -> AbstractProductA:
@@ -53,8 +52,8 @@ class Factory2(AbstractFactory):
 
 class AbstractProductA(ABC):
     '''
-    Cada possível produto requer uma interface prória
-    As diferentes famílias irão concretizar essa interface
+    Cada possível produto requer uma interface prória. As diferentes fa-
+    mílias irão concretizar essa interface
     '''
     
     @abstractmethod
@@ -64,8 +63,8 @@ class AbstractProductA(ABC):
 
 class AbstractProductB(ABC):
     '''
-    Esse é outro produto. Ele é diferente pois tem também
-    um método de interação.
+    Esse é outro produto. Ele é diferente pois tem também um método de
+    interação.
     '''
     
     @abstractmethod
@@ -75,8 +74,8 @@ class AbstractProductB(ABC):
     @abstractmethod
     def interact(self, other: AbstractProductA) -> None:
         '''
-        Um produto pode interagir com outro, da mesma família,
-        para realizar tarefas mais complexas.
+        Um produto pode interagir com outro, da mesma família, para rea-
+        lizar tarefas mais complexas.
         '''
         pass
     
@@ -97,8 +96,8 @@ class ProductB1(AbstractProductB):
         
     def interact(self, other: AbstractProductA):
         '''
-        Esse produto B é da família 1, então "other" deve ser também.
-        Ainda assim, o argumento é genérico.
+        Esse produto B é da família 1, então "other" deve ser também. A-
+        inda assim, o argumento é genérico.
         '''
         print("Produto B interage com produto A")
         other.use_a()

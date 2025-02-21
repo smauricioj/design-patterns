@@ -35,14 +35,16 @@ def singleton_lazy_tests() -> bool:
 
 class SingletonMonostate:
     '''
-    SingletonMonostate: múltiplas instâncias são permitidas,
-    mas elas compartilham o mesmo estado dos atributos
+    SingletonMonostate: múltiplas instâncias são permitidas, mas elas
+    compartilham o mesmo estado dos atributos
     '''
     
     __estado : Dict = {}
     
     def __new__(cls, *args, **kwargs) -> Self:
-        obj = super(SingletonMonostate, cls).__new__(cls, *args, **kwargs)
+        obj = super(SingletonMonostate, cls).__new__(
+            cls, *args, **kwargs
+        )
         obj.__dict__ = cls.__estado
         return obj
     
@@ -66,7 +68,10 @@ class SingletonMetaclass(type):
     
     def __call__(cls, *args, **kwds):
         if cls not in cls.__instances:
-            cls.__instances[cls] = super(SingletonMetaclass, cls).__call__(*args, **kwds)
+            cls.__instances[cls] = (
+                super(SingletonMetaclass, cls)
+                .__call__(*args, **kwds)
+            )
         return cls.__instances[cls]
     
     
@@ -82,9 +87,9 @@ def singleton_metaclass_tests() -> bool:
 
 class SingletonMetaclassMultiThread(type):
     '''
-    SingletonMetaclassMultiThread: Em situações de várias threads,
-    o singleton simples pode falhar. Assim, é necessária precaução
-    e o uso do Lock para impedir a falha.
+    SingletonMetaclassMultiThread: Em situações de várias threads, o si-
+    ngleton simples pode falhar. Assim, é necessária precaução e o uso
+    do Lock para impedir a falha.
     '''
     
     __instances : Dict = {}
@@ -93,19 +98,22 @@ class SingletonMetaclassMultiThread(type):
     def __call__(cls, *args, **kwds):
         with cls.__lock:
             '''
-            A primeira thread que passar pela call vai adquirir o
-            lock e criar a instância. Todas as outras até podem
-            entrar em call e esperar pelo lock, mas quando passarem
-            vão descobrir a instância criada e falhar no seguinte if
+            A primeira thread que passar pela call vai adquirir o lock e
+            criar a instância. Todas as outras até podem entrar em call
+            e esperar pelo lock, mas quando passarem vão descobrir a in-
+            stância criada e falhar no seguinte if
             '''
             if cls not in cls.__instances:
-                cls.__instances[cls] = super(SingletonMetaclassMultiThread, cls).__call__(*args, **kwds)
+                cls.__instances[cls] = (
+                    super(SingletonMetaclassMultiThread, cls)
+                    .__call__(*args, **kwds)
+                )
         return cls.__instances[cls]
     
 class LoggerMultiThread(metaclass=SingletonMetaclassMultiThread):
     '''
-    Esse logger pode ser operado em multi threads e vai
-    ter apenas uma instância, com apenas uma chave
+    Esse logger pode ser operado em multi threads e vai ter apenas uma
+    instância, com apenas uma chave
     '''
     key: str = None
     

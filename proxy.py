@@ -1,5 +1,5 @@
 """
-Módulo com exemplo do projeto padrão tipo Factory Method
+Módulo com exemplo do projeto padrão tipo Proxy
 
 Autor: Sergio P.
 Data: 21/02/2025

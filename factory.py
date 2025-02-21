@@ -68,14 +68,15 @@ class Creator(AbstractCreator):
     '''
     O criador concreto define como o método de fabricação
     é responsável por instanciar os produtos corretos.
-    Aqui, eu usei o padrão protótipo a partir de uma tabela hash
+    Aqui, eu usei o padrão protótipo para instanciar os
+    produtos partir de uma tabela hash... mas não é necessário
     '''
     
     __prototypes : Dict[str, AbstractProduct] = {}
     
     def __init__(self) -> None:
-        self.__prototypes['ProductA'] = ProductA()
-        self.__prototypes['ProductB'] = ProductB()
+        self.__prototypes['A'] = ProductA()
+        self.__prototypes['B'] = ProductB()
 
     def factoryMethod(self, product:str) -> AbstractProduct:
         return self.__prototypes[product].copy()
@@ -84,9 +85,9 @@ class Creator(AbstractCreator):
 # Teste
 def factory_method_tests() -> bool:
     c = Creator()
-    pa1 = c.factoryMethod(product='ProductA')
-    pa2 = c.factoryMethod(product='ProductA')
-    pb1 = c.factoryMethod(product='ProductB')
+    pa1 = c.factoryMethod(product='A')
+    pa2 = c.factoryMethod(product='A')
+    pb1 = c.factoryMethod(product='B')
     assert id(pa1) != id(pa2)
     assert type(pa1) != type(pb1)
     return True

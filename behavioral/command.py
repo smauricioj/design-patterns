@@ -10,7 +10,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 
-class Command(ABC):
+class AbstractCommand(ABC):
     '''
     Interface de comando abstrato que declara um método de execução
     '''
@@ -20,33 +20,28 @@ class Command(ABC):
         pass
     
 
-class SimpleCommand(Command):
+class SimpleCommand(AbstractCommand):
     '''
     Comandos simples podem implementar o código associado à uma tarefa
     sozinhos
     '''
-    
-    def __init__(self, foo: str) -> None:
-        self._foo = foo
-        
+            
     def execute(self) -> None:
         print(f"Fazendo algo simples, com foo = {self._foo}")
         
-class ComplexCommand(Command):
+class ComplexCommand(AbstractCommand):
     '''
     Tarefas mais complexas são delegadas para outras classes, chamadas
     receivers, onde a operação lógica fica implementada
     '''
     
-    def __init__(self, receiver: Receiver, foo: str, bar: str) -> None:
-        self._receiver = receiver
-        self._foo = foo
-        self._bar = bar
+    def __init__(self, receiver: Receiver) -> None:
+        self._receiver : Receiver = receiver
+        self._params : list = [1, 2, 3]
         
     def execute(self) -> None:
         print("Fazendo algo complexo, com auxílio de um receiver!")
-        self._receiver.task_a(self._foo)
-        self._receiver.task_b(self._bar)
+        self._receiver.task(self._params)
         
 
 class Receiver:
@@ -54,11 +49,8 @@ class Receiver:
     Receivers implementam as operações lógicas associadas aos comandos.
     '''
     
-    def task_a(self, foo: str) -> None:
-        print(f"Receiver faz algo com foo = {foo}")
-    
-    def task_b(self, bar: str) -> None:
-        print(f"Receiver faz outro algo com bar = {bar}")
+    def task(self, params: list) -> None:
+        print(f"Receiver faz algo com params = {params}")
         
 
 class Invoker:
@@ -72,13 +64,13 @@ class Invoker:
     '''
     
     def __init__(self) -> None:
-        self._before: List[Command] = []
-        self._after: List[Command] = []
+        self._before: List[AbstractCommand] = []
+        self._after: List[AbstractCommand] = []
         
-    def append_command_before(self, cmd: Command) -> None:
+    def append_command_before(self, cmd: AbstractCommand) -> None:
         self._before.append(cmd)
         
-    def append_command_after(self, cmd: Command) -> None:
+    def append_command_after(self, cmd: AbstractCommand) -> None:
         self._after.append(cmd)
         
     def do_something_important(self) -> bool:
@@ -96,10 +88,8 @@ class Invoker:
 # Testes
 def command_tests() -> bool:    
     ivk, rcv = Invoker(), Receiver()
-    ivk.append_command_before(SimpleCommand(foo='abc'))
-    ivk.append_command_after(
-        ComplexCommand(receiver=rcv, foo='abc', bar='123')
-    )
+    ivk.append_command_before(SimpleCommand())
+    ivk.append_command_after(ComplexCommand(receiver=rcv))                             
     return ivk.do_something_important()
     
 # Main

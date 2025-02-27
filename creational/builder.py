@@ -112,13 +112,13 @@ class Director:
         
         self._builder = builder
         
-    def build_small_product(self) -> None:
-        self.builder.produce_part_a()
-        
-    def build_large_product(self) -> None:
-        self.builder.produce_part_a()
-        self.builder.produce_part_b()
-        self.builder.produce_part_c()
+    def build(self, kind:str = 'small') -> None:
+        if kind == 'small':
+            self.builder.produce_part_a()
+        else:
+            self.builder.produce_part_a()
+            self.builder.produce_part_b()
+            self.builder.produce_part_c()
         
 # Teste
 def builder_test() -> bool:
@@ -127,11 +127,11 @@ def builder_test() -> bool:
     director.builder = builder
     
     # Faz um produto pequeno
-    director.build_small_product()
+    director.build(kind='small')
     builder.product.list_parts()
     
     # Faz um produto grande
-    director.build_large_product()
+    director.build(kind='large')
     builder.product.list_parts()
     
     # Deu tudo certo!

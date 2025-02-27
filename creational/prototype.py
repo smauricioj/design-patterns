@@ -5,23 +5,27 @@ Autor: Sergio P.
 Data: 20/11/2024
 """
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing_extensions import Self
 
 class Prototype(ABC):
     
-    def copy(self) -> Self:
-        object = eval(type(self).__name__)
-        newInstance = object.__new__(object)
-        newInstance.__dict__ = self.__dict__.copy()
-        return newInstance
+    @abstractmethod
+    def copy(self) -> None:
+        pass
 
 
 class Product(Prototype):
         
     def __init__(self) -> None:
-        self.foo = 1
         self.bar = 2
+        
+    def copy(self) -> Self:
+        object = eval(type(self).__name__)
+        newInstance = object.__new__(object)
+        newInstance.__dict__ = self.__dict__.copy()
+        return newInstance
+        
 
 
 # Testes

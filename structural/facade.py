@@ -1,3 +1,10 @@
+"""
+Módulo com exemplo do projeto padrão tipo Facade
+
+Autor: Sergio P.
+Data: 27/02/2025
+"""
+
 from __future__ import annotations
 
 

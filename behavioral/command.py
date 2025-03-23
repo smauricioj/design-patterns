@@ -91,6 +91,7 @@ def command_tests() -> bool:
     ivk.append_command_before(SimpleCommand())
     ivk.append_command_after(ComplexCommand(receiver=rcv))                             
     return ivk.do_something_important()
+
     
 # Main
 def main() -> None:
